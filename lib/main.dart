@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tpm_teori_t3/about.dart';
-// import 'package:tpm_teori_t3/login_page.dart';
-import 'package:tpm_teori_t3/num_type.dart';
+
+import 'package:tpm_teori_t3/convert.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,12 +12,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: AboutPage(),
+      themeMode: ThemeMode.light,
+      theme: ThemeData.light().copyWith(
+          inputDecorationTheme: InputDecorationTheme(
+              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 1)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2)),
+              labelStyle: TextStyle(color: Colors.black))),
+      home: const Convert(),
     );
   }
 }
