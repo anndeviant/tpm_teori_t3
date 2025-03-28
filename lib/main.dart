@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:tpm_teori_t3/convert.dart';
+import 'package:tpm_teori_t3/swap_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black, width: 2)),
               labelStyle: TextStyle(color: Colors.black))),
-      home: const Convert(),
+      home: const SwapScreen(),
     );
   }
 }
