@@ -1,4 +1,3 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class Convert extends StatefulWidget {
@@ -14,12 +13,7 @@ class _ConvertState extends State<Convert> {
   String dropdownValue = list.first;
   int hasil = 0;
   final yearController = TextEditingController();
-  //this
-  final items = <Widget>[
-    Icon(Icons.home, size: 30),
-    Icon(Icons.book, size: 30),
-    Icon(Icons.person, size: 30),
-  ];
+
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -79,9 +73,8 @@ class _ConvertState extends State<Convert> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         backgroundColor: Colors.deepPurple,
-        title: Text("Konverter Tahun"),
+        title: Text("Konverter Tahun", style: TextStyle(color: Colors.white)),
       ),
       body: SafeArea(
           child: Padding(
@@ -132,17 +125,6 @@ class _ConvertState extends State<Convert> {
           ),
         ),
       )),
-      //this
-      bottomNavigationBar: Theme(
-        data: Theme.of(context)
-            .copyWith(iconTheme: IconThemeData(color: Colors.white)),
-        child: CurvedNavigationBar(
-            color: Colors.deepPurpleAccent,
-            buttonBackgroundColor: Colors.deepPurple,
-            height: 60,
-            backgroundColor: Colors.transparent,
-            items: items),
-      ),
     );
   }
 }
