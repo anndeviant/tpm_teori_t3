@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tpm_teori_t3/about.dart';
 // import 'package:tpm_teori_t3/login_page.dart';
 import 'package:tpm_teori_t3/num_type.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: NumType(),
+      home: AboutPage(),
     );
   }
 }
