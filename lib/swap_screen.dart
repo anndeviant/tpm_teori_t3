@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tpm_teori_t3/about.dart';
-import 'package:tpm_teori_t3/convert.dart';
+import 'package:tpm_teori_t3/drawer.dart';
 import 'package:tpm_teori_t3/profiles.dart';
 
 class SwapScreen extends StatefulWidget {
@@ -13,7 +13,7 @@ class SwapScreen extends StatefulWidget {
 
 class _SwapScreenState extends State<SwapScreen> {
   final screen = <Widget>[
-    Convert(),
+    MyDrawer(),
     AboutPage(),
     Profiles(),
   ];
