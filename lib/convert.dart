@@ -72,10 +72,6 @@ class _ConvertState extends State<Convert> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        title: Text("Konverter Tahun", style: TextStyle(color: Colors.white)),
-      ),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(12.0),
