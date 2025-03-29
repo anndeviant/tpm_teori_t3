@@ -11,13 +11,13 @@ class SwapScreen extends StatefulWidget {
   State<SwapScreen> createState() => _SwapScreenState();
 }
 
-final screen = [
-  Convert(),
-  AboutPage(),
-  Profiles(),
-];
-
 class _SwapScreenState extends State<SwapScreen> {
+  final screen = <Widget>[
+    Convert(),
+    AboutPage(),
+    Profiles(),
+  ];
+
   //this
   int index = 0;
   final items = <Widget>[
@@ -25,12 +25,19 @@ class _SwapScreenState extends State<SwapScreen> {
     Icon(Icons.book, size: 30),
     Icon(Icons.person, size: 30),
   ];
+
+  final PageController _pageController = PageController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
       child: Scaffold(
-        body: screen[index],
+        body: PageView(
+            controller: _pageController,
+            onPageChanged: (index) => setState(() {
+                  this.index = index;
+                }),
+            children: screen),
         //this
         bottomNavigationBar: Theme(
           data: Theme.of(context)
@@ -42,6 +49,11 @@ class _SwapScreenState extends State<SwapScreen> {
               index: index,
               onTap: (index) => setState(() {
                     this.index = index;
+                    _pageController.animateToPage(
+                      index,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
                   }),
               backgroundColor: Colors.transparent,
               items: items),
