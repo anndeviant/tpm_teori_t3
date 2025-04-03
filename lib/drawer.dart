@@ -63,10 +63,13 @@ class _MyDrawerState extends State<MyDrawer> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.deepPurple),
-              child: Text("Drawer Header",
-                  style: TextStyle(color: Colors.white, fontSize: 24)),
+            ClipPath(
+              clipper: customClipPath(),
+              child: DrawerHeader(
+                decoration: BoxDecoration(color: Colors.deepPurple),
+                child: Text("Drawer Header",
+                    style: TextStyle(color: Colors.white, fontSize: 24)),
+              ),
             ),
             ListTile(
               leading: Icon(Icons.calendar_today_rounded),
@@ -95,5 +98,31 @@ class _MyDrawerState extends State<MyDrawer> {
       ),
       body: screen[index],
     );
+  }
+}
+
+class customClipPath extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path_0 = Path();
+    path_0.moveTo(0, 0);
+    path_0.quadraticBezierTo(
+        0, size.height * 0.6250000, 0, size.height * 0.8750000);
+    path_0.cubicTo(
+        size.width * 0.5660000,
+        size.height * 1.0845000,
+        size.width * 0.4660000,
+        size.height * 0.6845000,
+        size.width,
+        size.height * 0.8500000);
+    path_0.quadraticBezierTo(
+        size.width, size.height * 0.6625000, size.width, 0);
+
+    return path_0;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
   }
 }
