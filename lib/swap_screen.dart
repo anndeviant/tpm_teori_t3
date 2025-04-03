@@ -21,9 +21,9 @@ class _SwapScreenState extends State<SwapScreen> {
   //this
   int index = 0;
   final items = <Widget>[
-    Icon(Icons.home, size: 30),
-    Icon(Icons.book, size: 30),
-    Icon(Icons.person, size: 30),
+    Icon(Icons.home, size: 25),
+    Icon(Icons.book, size: 25),
+    Icon(Icons.person, size: 25),
   ];
 
   final PageController _pageController = PageController();
@@ -32,6 +32,7 @@ class _SwapScreenState extends State<SwapScreen> {
     return SafeArea(
       top: false,
       child: Scaffold(
+        extendBody: true,
         body: PageView(
             controller: _pageController,
             onPageChanged: (index) => setState(() {
@@ -45,7 +46,7 @@ class _SwapScreenState extends State<SwapScreen> {
           child: CurvedNavigationBar(
               color: Colors.deepPurpleAccent,
               buttonBackgroundColor: Colors.deepPurple,
-              height: 60,
+              height: 50,
               index: index,
               onTap: (index) => setState(() {
                     this.index = index;
