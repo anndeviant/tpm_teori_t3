@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "527944443684",
+    "project_id": "tpm-teori-t3",
+    "storage_bucket": "tpm-teori-t3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527944443684:android:572899f5bce145ca4435b1",
+        "android_client_info": {
+          "package_name": "com.example.tpm_teori_t3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-HTOk5WhohNmUxlnSZSSBTTw4oN_rbQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
