@@ -108,7 +108,15 @@ class _ConvertState extends State<Convert> {
                         TextField(
                           controller: yearController,
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(label: Text("Tahun")),
+                          decoration: InputDecoration(
+                              label: Text("Tahun"),
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  yearController.clear();
+                                  convert();
+                                },
+                              )),
                           onChanged: (value) => convert(),
                         ),
                         Divider(thickness: 2),
