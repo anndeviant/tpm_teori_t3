@@ -74,51 +74,71 @@ class _ConvertState extends State<Convert> {
     return Scaffold(
       body: SafeArea(
           child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: SizedBox(
-          height: 200,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: yearController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(label: Text("Tahun")),
-                onChanged: (value) => convert(),
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Text(
+              'Konversi Tahun',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
               ),
-              Divider(thickness: 2),
-              Column(
+            ),
+            Image.asset(
+              "assets/images/calendar.png",
+              height: 200,
+              width: 250,
+              fit: BoxFit.cover,
+            ),
+            SizedBox(
+              height: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DropdownButton<String>(
-                    value: dropdownValue,
-                    elevation: 16,
-                    style:
-                        const TextStyle(color: Colors.deepPurple, fontSize: 15),
-                    underline:
-                        Container(height: 1, color: Colors.deepPurpleAccent),
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        dropdownValue = value!;
-                        convert();
-                      });
-                    },
-                    items: list.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                          value: value, child: Text(value));
-                    }).toList(),
-                  ),
-                  Text(
-                    "Hasil : $hasil $dropdownValue",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+                  TextField(
+                    controller: yearController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(label: Text("Tahun")),
+                    onChanged: (value) => convert(),
                   ),
                   Divider(thickness: 2),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      DropdownButton<String>(
+                        value: dropdownValue,
+                        elevation: 16,
+                        style: const TextStyle(
+                            color: Colors.deepPurple, fontSize: 15),
+                        underline: Container(
+                            height: 1, color: Colors.deepPurpleAccent),
+                        onChanged: (String? value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            dropdownValue = value!;
+                            convert();
+                          });
+                        },
+                        items:
+                            list.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                              value: value, child: Text(value));
+                        }).toList(),
+                      ),
+                      Text(
+                        "Hasil : $hasil $dropdownValue",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 19),
+                      ),
+                      Divider(thickness: 2),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       )),
     );
