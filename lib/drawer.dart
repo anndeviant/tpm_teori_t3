@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tpm_teori_t3/convert.dart';
 import 'package:tpm_teori_t3/num_type.dart';
+import 'package:tpm_teori_t3/stopwatch.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -15,9 +16,10 @@ class _MyDrawerState extends State<MyDrawer> {
   final screen = [
     Convert(),
     NumType(),
+    StopwatchPage(),
   ];
 
-  final items = ["Konverter Tahun", "Check Jenis Bilangan"];
+  final items = ["Konverter Tahun", "Check Jenis Bilangan", "Stop Watch"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,6 +91,17 @@ class _MyDrawerState extends State<MyDrawer> {
               onTap: () => {
                 setState(() {
                   index = 1;
+                }),
+                Navigator.pop(context)
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.timer_sharp),
+              selected: index == 2,
+              title: Text("Stop Wacth"),
+              onTap: () => {
+                setState(() {
+                  index = 2;
                 }),
                 Navigator.pop(context)
               },
