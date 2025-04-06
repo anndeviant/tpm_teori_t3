@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tpm_teori_t3/auth/auth_wrapper.dart';
 import 'package:tpm_teori_t3/firebase_options.dart';
-import 'package:tpm_teori_t3/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black, width: 2)),
               labelStyle: TextStyle(color: Colors.black))),
-      home: const SplashScreen(),
+      home: const AuthWrapper(),
     );
   }
 }
