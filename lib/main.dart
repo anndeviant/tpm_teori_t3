@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tpm_teori_t3/swap_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:tpm_teori_t3/firebase_options.dart';
+import 'package:tpm_teori_t3/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -20,7 +26,7 @@ class MyApp extends StatelessWidget {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black, width: 2)),
               labelStyle: TextStyle(color: Colors.black))),
-      home: const SwapScreen(),
+      home: const SplashScreen(),
     );
   }
 }
