@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:tpm_teori_t3/auth/auth_service.dart';
 import 'package:tpm_teori_t3/auth/login_screen.dart';
 import 'package:tpm_teori_t3/swap_screen.dart';
 
@@ -92,7 +93,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
     // Jika koneksi ada, langsung cek auth state yang annas buat tadi
     return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: AuthService().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
