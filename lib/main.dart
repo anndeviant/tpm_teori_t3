@@ -20,12 +20,16 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       theme: ThemeData.light().copyWith(
           inputDecorationTheme: InputDecorationTheme(
-              border: OutlineInputBorder(),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 1)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2)),
-              labelStyle: TextStyle(color: Colors.black))),
+        border: OutlineInputBorder(),
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xff6A1B9A), width: 1)),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xff6A1B9A), width: 2)),
+        labelStyle: TextStyle(color: Colors.grey),
+        prefixIconColor: Colors.grey,
+        suffixIconColor: Colors.grey,
+        //iconColor: Colors.grey, // ubah jika butuh
+      )),
       home: const AuthWrapper(),
     );
   }
