@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tpm_teori_t3/auth/auth_service.dart';
-import 'package:tpm_teori_t3/auth/login_screen.dart';
+import 'package:tpm_teori_t3/auth/landing_screen.dart';
 import 'package:tpm_teori_t3/swap_screen.dart';
 
 class AuthWrapper extends StatefulWidget {
@@ -21,7 +21,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   @override
   void initState() {
     super.initState();
-    _checkInternetWithTimeout();// ngeceknya di initstate biar di proses paling awal
+    _checkInternetWithTimeout(); // ngeceknya di initstate biar di proses paling awal
   }
 
   Future<void> _checkInternetWithTimeout() async {
@@ -112,7 +112,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
         if (snapshot.hasData) {
           return const SwapScreen();
         } else {
-          return const LoginScreen();
+          return const LandingScreen();
         }
       },
     );
