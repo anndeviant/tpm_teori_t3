@@ -186,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SvgPicture.asset(
                               "assets/svg/login.svg",
-                              height: screenHeight * 0.3,
+                              height: screenHeight * 0.35,
                             ),
                             if (_errorMessage != null)
                               Container(
