@@ -57,7 +57,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   children: [
                     SvgPicture.asset(
                       "assets/svg/login.svg",
-                      height: screenHeight * 0.4,
+                      height: screenHeight * 0.45,
                     ),
                     const SizedBox(height: 32),
 
