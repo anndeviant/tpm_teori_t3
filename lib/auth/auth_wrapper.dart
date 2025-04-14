@@ -26,7 +26,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
   Future<void> _checkInternetWithTimeout() async {
     // cek selama 10 detik untuk koneksi, lyan suka lupa fungsi method
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 7; i++) {
       bool result = await InternetConnectionChecker().hasConnection;
       if (result) {
         setState(() {
