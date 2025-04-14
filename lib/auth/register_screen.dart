@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tpm_teori_t3/auth/auth_service.dart';
+import 'package:tpm_teori_t3/auth/landing_screen.dart';
 import 'package:tpm_teori_t3/auth/login_screen.dart';
 import 'package:tpm_teori_t3/utils/painter.dart';
 
@@ -132,7 +133,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         top: 40,
                         left: 16,
                         child: GestureDetector(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LandingScreen()),
+                          ),
                           child: Icon(Icons.arrow_back_ios_rounded,
                               size: 20, color: Colors.white),
                         ),
@@ -148,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 26),
                             const Text(
                               'Create an Account',
                               textAlign: TextAlign.center,
