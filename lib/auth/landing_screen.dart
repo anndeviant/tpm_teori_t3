@@ -25,11 +25,11 @@ class _LandingScreenState extends State<LandingScreen> {
           child: Column(
             children: [
               CustomPaint(
-                size: Size(screenWidth, 100),
+                size: Size(screenWidth, screenHeight * 0.10),
                 painter: HeadPainter(),
               ),
 
-              SizedBox(height: 24),
+              SizedBox(height: 40),
               Text(
                 'Welcome!',
                 textAlign: TextAlign.center,
