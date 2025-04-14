@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tpm_teori_t3/auth/login_screen.dart';
 import 'package:tpm_teori_t3/convert.dart';
 import 'package:tpm_teori_t3/num_type.dart';
 import 'package:tpm_teori_t3/stopwatch.dart';
+import 'package:tpm_teori_t3/auth/auth_service.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -12,6 +14,9 @@ class MyDrawer extends StatefulWidget {
 
 class _MyDrawerState extends State<MyDrawer> {
   int index = 0;
+  final AuthService _authService = AuthService();
+  String fullName = "Loading...";
+  String email = "";
 
   final screen = [
     Convert(),
@@ -20,6 +25,27 @@ class _MyDrawerState extends State<MyDrawer> {
   ];
 
   final items = ["Konverter Tahun", "Check Jenis Bilangan", "Stop Watch"];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData(); // waktu loading ambil data user
+  }
+
+  // Load user data
+  Future<void> _loadUserData() async {
+    final user = _authService.currentUser;
+    if (user != null) {
+      final userData = await _authService.getCurrentUserData();
+      if (userData != null) {
+        setState(() {
+          fullName = userData['fullName'] ?? "No Name";
+          email = user.email ?? "No Email";
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,12 +71,34 @@ class _MyDrawerState extends State<MyDrawer> {
                       child: const Text('Cancel'),
                     ),
                     TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Logged out successfully')),
-                        );
+                      onPressed: () async {
+                        try {
+                          await _authService.signOut();
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()),
+                                (route) => false);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text(
+                                    'Logged out successfully',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                            );
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content:
+                                      Text('Logout failed: ${e.toString()}')),
+                            );
+                          }
+                        }
                       },
                       child: const Text('Logout'),
                     ),
@@ -69,8 +117,28 @@ class _MyDrawerState extends State<MyDrawer> {
               clipper: customClipPath(),
               child: DrawerHeader(
                 decoration: BoxDecoration(color: Colors.deepPurple),
-                child: Text("Drawer Header",
-                    style: TextStyle(color: Colors.white, fontSize: 24)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Welcome,",
+                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      fullName,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      email,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ],
+                ),
               ),
             ),
             ListTile(

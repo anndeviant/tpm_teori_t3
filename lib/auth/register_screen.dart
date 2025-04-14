@@ -17,6 +17,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _classController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final AuthService _authService = AuthService();
   bool _isLoading = false;
@@ -29,6 +31,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _fullNameController.dispose();
+    _classController.dispose();
     super.dispose();
   }
 
@@ -43,6 +47,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await _authService.registerWithEmailAndPassword(
           _emailController.text.trim(),
           _passwordController.text.trim(),
+          fullName: _fullNameController.text.trim(),
+          className: _classController.text.trim(),
         );
 
         // Show success message
@@ -163,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             SvgPicture.asset(
                               "assets/svg/regis.svg",
-                              height: screenHeight * 0.3,
+                              height: screenHeight * 0.25,
                             ),
                             if (_errorMessage != null)
                               Container(
@@ -179,6 +185,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             if (_errorMessage != null)
                               const SizedBox(height: 8),
+                            // Full Name
+                            TextFormField(
+                              controller: _fullNameController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                labelText: 'Full Name',
+                                hintText: 'Enter your full name',
+                                prefixIcon: const Icon(Icons.person),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your full name';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 10),
                             // Email
                             TextFormField(
                               controller: _emailController,
