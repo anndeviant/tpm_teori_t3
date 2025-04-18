@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class StopwatchPage extends StatefulWidget {
-  const StopwatchPage({super.key});
-
   @override
   _StopwatchPageState createState() => _StopwatchPageState();
 }
@@ -11,7 +9,7 @@ class StopwatchPage extends StatefulWidget {
 class _StopwatchPageState extends State<StopwatchPage>
     with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   late Stopwatch _stopwatch;
-  late Timer _timer;
+  Timer? _timer;
   List<Map<String, String>> _laps = [];
   Duration _previousLapTime = Duration.zero;
   late AnimationController _controller;
@@ -19,7 +17,6 @@ class _StopwatchPageState extends State<StopwatchPage>
 
   // Variabel untuk tracking waktu di background
   Duration _totalElapsedTime = Duration.zero;
-  DateTime? _startTime;
   DateTime? _backgroundEnterTime;
 
   @override
@@ -40,7 +37,7 @@ class _StopwatchPageState extends State<StopwatchPage>
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     _controller.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -78,7 +75,7 @@ class _StopwatchPageState extends State<StopwatchPage>
 
   void _startStopwatch() {
     if (!_stopwatch.isRunning) {
-      _startTime = DateTime.now().subtract(_totalElapsedTime);
+      _stopwatch.reset(); // Reset stopwatch untuk mulai dari 0
       _stopwatch.start();
       _controller.repeat();
       _startTimer();
@@ -89,9 +86,9 @@ class _StopwatchPageState extends State<StopwatchPage>
   void _pauseStopwatch() {
     if (_stopwatch.isRunning) {
       _stopwatch.stop();
-      _totalElapsedTime = DateTime.now().difference(_startTime!);
+      _totalElapsedTime += _stopwatch.elapsed; // Tambah waktu yang berjalan
       _controller.stop();
-      _timer.cancel();
+      _timer?.cancel();
       setState(() {});
     }
   }
@@ -102,9 +99,8 @@ class _StopwatchPageState extends State<StopwatchPage>
     _laps.clear();
     _previousLapTime = Duration.zero;
     _totalElapsedTime = Duration.zero;
-    _startTime = null;
-    if (_timer.isActive) {
-      _timer.cancel();
+    if (_timer?.isActive ?? false) {
+      _timer?.cancel();
     }
     setState(() {});
   }
@@ -156,7 +152,7 @@ class _StopwatchPageState extends State<StopwatchPage>
         child: Column(
           children: [
             SizedBox(height: 30),
-            Container(
+            SizedBox(
               width: 300,
               height: 300,
               child: Stack(
@@ -219,27 +215,27 @@ class _StopwatchPageState extends State<StopwatchPage>
               children: [
                 FloatingActionButton(
                   onPressed: _stopwatch.isRunning ? _lapTime : _resetStopwatch,
+                  backgroundColor: Colors.green,
+                  heroTag: null,
+                  elevation: 5,
                   child: Icon(
                     _stopwatch.isRunning ? Icons.flag : Icons.refresh,
                     color: Colors.white,
                   ),
-                  backgroundColor: Colors.green,
-                  heroTag: null,
-                  elevation: 5,
                 ),
                 SizedBox(width: 30),
                 FloatingActionButton(
                   onPressed:
                       _stopwatch.isRunning ? _pauseStopwatch : _startStopwatch,
+                  backgroundColor:
+                      _stopwatch.isRunning ? Colors.orange : Colors.deepPurple,
+                  heroTag: null,
+                  elevation: 5,
                   child: Icon(
                     _stopwatch.isRunning ? Icons.pause : Icons.play_arrow,
                     color: Colors.white,
                     size: 32,
                   ),
-                  backgroundColor:
-                      _stopwatch.isRunning ? Colors.orange : Colors.deepPurple,
-                  heroTag: null,
-                  elevation: 5,
                 ),
               ],
             ),
@@ -313,7 +309,7 @@ class _StopwatchPageState extends State<StopwatchPage>
                                       ),
                                     ),
                                     title: Text(
-                                      _laps[index]['lapTime']!,
+                                      _laps[index]['totalTime']!,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
@@ -325,7 +321,7 @@ class _StopwatchPageState extends State<StopwatchPage>
                                       ),
                                     ),
                                     trailing: Text(
-                                      _laps[index]['totalTime']!,
+                                      "+ ${_laps[index]['lapTime']!}", // 🟡 awalnya totalTime, diganti jadi lapTime
                                       style: TextStyle(
                                         color: Colors.grey[600],
                                         fontSize: 14,
