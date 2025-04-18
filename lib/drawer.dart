@@ -15,7 +15,7 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  int index = 3;
+  int index = 0;
   final AuthService _authService = AuthService();
   String fullName = "Loading...";
   String email = "";
