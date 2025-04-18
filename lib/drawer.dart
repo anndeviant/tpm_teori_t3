@@ -33,7 +33,7 @@ class _MyDrawerState extends State<MyDrawer> {
     "Check Jenis Bilangan",
     "Stop Watch",
     "LBS"
-    "Saran Website"
+        "Saran Website"
   ];
 
   @override
@@ -188,6 +188,14 @@ class _MyDrawerState extends State<MyDrawer> {
               leading: Icon(Icons.map_outlined),
               selected: index == 3,
               title: Text("LBS"),
+              onTap: () => {
+                setState(() {
+                  index = 3;
+                }),
+                Navigator.pop(context)
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.web),
               selected: index == 4,
               title: Text("Saran Website"),
