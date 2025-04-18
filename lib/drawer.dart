@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tpm_teori_t3/auth/login_screen.dart';
 import 'package:tpm_teori_t3/convert.dart';
+import 'package:tpm_teori_t3/maps_screen.dart';
 import 'package:tpm_teori_t3/num_type.dart';
 import 'package:tpm_teori_t3/stopwatch.dart';
 import 'package:tpm_teori_t3/auth/auth_service.dart';
@@ -13,7 +14,7 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  int index = 0;
+  int index = 3;
   final AuthService _authService = AuthService();
   String fullName = "Loading...";
   String email = "";
@@ -22,9 +23,15 @@ class _MyDrawerState extends State<MyDrawer> {
     Convert(),
     NumType(),
     StopwatchPage(),
+    MapScreen(),
   ];
 
-  final items = ["Konverter Tahun", "Check Jenis Bilangan", "Stop Watch"];
+  final items = [
+    "Konverter Tahun",
+    "Check Jenis Bilangan",
+    "Stop Watch",
+    "LBS"
+  ];
 
   @override
   void initState() {
@@ -170,6 +177,17 @@ class _MyDrawerState extends State<MyDrawer> {
               onTap: () => {
                 setState(() {
                   index = 2;
+                }),
+                Navigator.pop(context)
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.map_outlined),
+              selected: index == 3,
+              title: Text("LBS"),
+              onTap: () => {
+                setState(() {
+                  index = 3;
                 }),
                 Navigator.pop(context)
               },
