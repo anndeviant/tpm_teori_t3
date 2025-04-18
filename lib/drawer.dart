@@ -5,6 +5,7 @@ import 'package:tpm_teori_t3/maps_screen.dart';
 import 'package:tpm_teori_t3/num_type.dart';
 import 'package:tpm_teori_t3/stopwatch.dart';
 import 'package:tpm_teori_t3/auth/auth_service.dart';
+import 'package:tpm_teori_t3/website_menu.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -24,6 +25,7 @@ class _MyDrawerState extends State<MyDrawer> {
     NumType(),
     StopwatchPage(),
     MapScreen(),
+    WebsiteRecommendationScreen()
   ];
 
   final items = [
@@ -31,6 +33,7 @@ class _MyDrawerState extends State<MyDrawer> {
     "Check Jenis Bilangan",
     "Stop Watch",
     "LBS"
+    "Saran Website"
   ];
 
   @override
@@ -185,9 +188,12 @@ class _MyDrawerState extends State<MyDrawer> {
               leading: Icon(Icons.map_outlined),
               selected: index == 3,
               title: Text("LBS"),
+              leading: Icon(Icons.web),
+              selected: index == 4,
+              title: Text("Saran Website"),
               onTap: () => {
                 setState(() {
-                  index = 3;
+                  index = 4;
                 }),
                 Navigator.pop(context)
               },

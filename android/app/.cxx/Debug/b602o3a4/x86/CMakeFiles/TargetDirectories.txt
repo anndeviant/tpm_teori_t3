@@ -1,0 +1,2 @@
+D:/S1 - Informatika/Semester 6/TPM/Tugas 3/tpm_teori_t3/android/app/.cxx/Debug/b602o3a4/x86/CMakeFiles/edit_cache.dir
+D:/S1 - Informatika/Semester 6/TPM/Tugas 3/tpm_teori_t3/android/app/.cxx/Debug/b602o3a4/x86/CMakeFiles/rebuild_cache.dir
