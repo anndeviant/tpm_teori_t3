@@ -4,6 +4,7 @@ import 'package:tpm_teori_t3/convert.dart';
 import 'package:tpm_teori_t3/num_type.dart';
 import 'package:tpm_teori_t3/stopwatch.dart';
 import 'package:tpm_teori_t3/auth/auth_service.dart';
+import 'package:tpm_teori_t3/website_menu.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -22,9 +23,15 @@ class _MyDrawerState extends State<MyDrawer> {
     Convert(),
     NumType(),
     StopwatchPage(),
+    WebsiteRecommendationScreen()
   ];
 
-  final items = ["Konverter Tahun", "Check Jenis Bilangan", "Stop Watch"];
+  final items = [
+    "Konverter Tahun",
+    "Check Jenis Bilangan",
+    "Stop Watch",
+    "Saran Website"
+  ];
 
   @override
   void initState() {
@@ -170,6 +177,17 @@ class _MyDrawerState extends State<MyDrawer> {
               onTap: () => {
                 setState(() {
                   index = 2;
+                }),
+                Navigator.pop(context)
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.web),
+              selected: index == 3,
+              title: Text("Saran Website"),
+              onTap: () => {
+                setState(() {
+                  index = 3;
                 }),
                 Navigator.pop(context)
               },
