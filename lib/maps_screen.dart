@@ -32,6 +32,15 @@ class _MapScreenState extends State<MapScreen> {
   List<LatLng> _routePoints = [];
   MarkerInfo? _selectedMarker;
 
+  // New state variables for route details
+  String? _routeDistance;
+  String? _routeDuration;
+  List<Map<String, dynamic>> _routeSteps = [];
+  // Add state for steps visibility
+  bool _areStepsVisible = true;
+  // Add a variable to control the bottom sheet visibility
+  bool _isRouteInfoVisible = false;
+
   @override
   void initState() {
     super.initState();
@@ -254,19 +263,51 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _drawRoute(LatLng destination) async {
     if (currentLatLng == null) return;
 
+    // Updated URL to get detailed step information
     final url =
-        'https://router.project-osrm.org/route/v1/driving/${currentLatLng!.longitude},${currentLatLng!.latitude};${destination.longitude},${destination.latitude}?overview=full&geometries=geojson';
+        'https://router.project-osrm.org/route/v1/driving/${currentLatLng!.longitude},${currentLatLng!.latitude};${destination.longitude},${destination.latitude}?overview=full&geometries=geojson&steps=true';
 
     try {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final coords = data['routes'][0]['geometry']['coordinates'] as List;
+        final route = data['routes'][0]; // Get first route
+        final coords = route['geometry']['coordinates'] as List;
+        final distanceInMeters = route['distance']; // Distance in meters
+        final durationInSeconds = route['duration']; // Duration in seconds
+
+        // Get route steps
+        final stepsData = (route['legs'][0]['steps'] as List)
+            .map((step) => step as Map<String, dynamic>)
+            .toList();
 
         setState(() {
           _routePoints = coords
               .map((c) => LatLng(c[1] as double, c[0] as double))
+              .toList();
+
+          // Convert and save statistics
+          _routeDistance = "${(distanceInMeters / 1000).toStringAsFixed(1)} km";
+          // Format duration
+          final durationMinutes = (durationInSeconds / 60).ceil();
+          _routeDuration = "$durationMinutes min";
+
+          // Save steps
+          _routeSteps = stepsData
+              .map((step) {
+                return {
+                  'instruction': step['maneuver']['instruction'],
+                  'name': step['name'] ?? '', // Road name
+                  'distance': step['distance'],
+                  'duration': step['duration'],
+                  'maneuver_type': step['maneuver']
+                      ['type'], // e.g., 'turn', 'arrive'
+                  'maneuver_modifier': step['maneuver']
+                      ['modifier'], // e.g., 'left', 'right'
+                };
+              })
+              .where((step) => step['maneuver_type'] != 'arrive')
               .toList();
         });
 
@@ -279,16 +320,214 @@ class _MapScreenState extends State<MapScreen> {
         // ignore: deprecated_member_use
         _mapController.fitBounds(bounds,
             // ignore: deprecated_member_use
-            options: FitBoundsOptions(padding: EdgeInsets.all(20)));
+            options: const FitBoundsOptions(padding: EdgeInsets.all(50)));
+
+        // Show route statistics
+        setState(() {
+          _isRouteInfoVisible = true; // Set to true when route is drawn
+        });
       } else {
-        throw Exception("Gagal memuat rute");
+        throw Exception("Gagal memuat rute: Status ${response.statusCode}");
       }
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Gagal menampilkan rute.")),
+        SnackBar(content: Text("Gagal menampilkan rute: ${e.toString()}")),
       );
+      // Reset state if failed
+      setState(() {
+        _routePoints = [];
+        _routeDistance = null;
+        _routeDuration = null;
+        _routeSteps = [];
+        _selectedMarker = null;
+        _isRouteInfoVisible = false; // Hide on error
+      });
     }
+  }
+
+  // Helper method to format distance based on value
+  String _formatDistance(dynamic distance) {
+    // Convert to double first to handle both int and double types
+    final distanceValue =
+        distance is int ? distance.toDouble() : distance as double;
+
+    if (distanceValue < 1000) {
+      return "(${distanceValue.round()} m)";
+    } else {
+      return "(${(distanceValue / 1000).toStringAsFixed(1)} km)";
+    }
+  }
+
+  // Replace the modal bottom sheet with a method to build the route info panel
+  Widget _buildRouteInfoPanel() {
+    if (!_isRouteInfoVisible || _routeSteps.isEmpty) {
+      return const SizedBox.shrink(); // Return empty widget if not visible
+    }
+
+    return Positioned(
+      bottom: 60, 
+      left: 0,
+      right: 0,
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with close button and toggle
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Detail Rute",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Row(
+                    children: [
+                      // Toggle visibility button
+                      IconButton(
+                        icon: Icon(_areStepsVisible
+                            ? Icons.keyboard_arrow_down_rounded
+                            : Icons.keyboard_arrow_up_rounded),
+                        onPressed: () {
+                          setState(() {
+                            _areStepsVisible = !_areStepsVisible;
+                          });
+                        },
+                        iconSize: 20,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        tooltip: _areStepsVisible
+                            ? "Sembunyikan langkah"
+                            : "Tampilkan langkah",
+                      ),
+                      const SizedBox(width: 8),
+                      // Close button
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          setState(() {
+                            _isRouteInfoVisible = false;
+                            _routePoints = [];
+                            _selectedMarker = null;
+                          });
+                        },
+                        iconSize: 20,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        tooltip: "Tutup rute",
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // Route summary
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Jarak: $_routeDistance"),
+                  Text("Estimasi Waktu: $_routeDuration"),
+                ],
+              ),
+            ),
+            // Add padding at the bottom even when steps are hidden
+            SizedBox(height: _areStepsVisible ? 0 : 12),
+            // Steps section (conditionally shown)
+            if (_areStepsVisible)
+              Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.3, 
+                ),
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Langkah:",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    Flexible(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _routeSteps.length,
+                        itemBuilder: (context, index) {
+                          final step = _routeSteps[index];
+                          // Determine icon based on step['maneuver_type'] and step['maneuver_modifier']
+                          IconData directionIcon = Icons.straight; // Default
+                          String modifier = step['maneuver_modifier'] ?? '';
+                          String type = step['maneuver_type'] ?? '';
+
+                          if (type == 'turn') {
+                            if (modifier.contains('left'))
+                              directionIcon = Icons.turn_left;
+                            else if (modifier.contains('right'))
+                              directionIcon = Icons.turn_right;
+                          } else if (type == 'fork') {
+                            directionIcon = Icons.call_split;
+                          } else if (type == 'roundabout') {
+                            directionIcon = Icons.roundabout_left;
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(directionIcon,
+                                    size: 20), // Show direction icon
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        step['instruction'] ?? 'Lanjut',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      Text(
+                                        "Jalan: ${step['name']} ${_formatDistance(step['distance'])}",
+                                        style: const TextStyle(
+                                            fontSize: 12, color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _goToMarker(MarkerInfo markerInfo) {
@@ -461,6 +700,8 @@ class _MapScreenState extends State<MapScreen> {
                         const Icon(Icons.my_location, color: Colors.deepPurple),
                   ),
                 ),
+                // Add the route info panel to the stack
+                _buildRouteInfoPanel(),
               ],
             ),
     );
