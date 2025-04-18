@@ -400,7 +400,7 @@ class _MapScreenState extends State<MapScreen> {
                   ],
                 ),
                 Positioned(
-                  top: 40,
+                  top: 20,
                   left: 20,
                   right: 20,
                   child: Column(
