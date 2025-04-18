@@ -25,15 +25,15 @@ class _MyDrawerState extends State<MyDrawer> {
     NumType(),
     StopwatchPage(),
     MapScreen(),
-    WebsiteRecommendationScreen()
+    WebsiteRecommendationScreen(),
   ];
 
   final items = [
     "Konverter Tahun",
     "Check Jenis Bilangan",
     "Stop Watch",
-    "LBS"
-        "Saran Website"
+    "LBS",
+    "Saran Website"
   ];
 
   @override
