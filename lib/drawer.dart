@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tpm_teori_t3/auth/login_screen.dart';
 import 'package:tpm_teori_t3/convert.dart';
+import 'package:tpm_teori_t3/maps_screen.dart';
 import 'package:tpm_teori_t3/num_type.dart';
 import 'package:tpm_teori_t3/stopwatch.dart';
 import 'package:tpm_teori_t3/auth/auth_service.dart';
@@ -14,7 +15,7 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  int index = 0;
+  int index = 3;
   final AuthService _authService = AuthService();
   String fullName = "Loading...";
   String email = "";
@@ -23,6 +24,7 @@ class _MyDrawerState extends State<MyDrawer> {
     Convert(),
     NumType(),
     StopwatchPage(),
+    MapScreen(),
     WebsiteRecommendationScreen()
   ];
 
@@ -30,6 +32,7 @@ class _MyDrawerState extends State<MyDrawer> {
     "Konverter Tahun",
     "Check Jenis Bilangan",
     "Stop Watch",
+    "LBS"
     "Saran Website"
   ];
 
@@ -182,12 +185,15 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.web),
+              leading: Icon(Icons.map_outlined),
               selected: index == 3,
+              title: Text("LBS"),
+              leading: Icon(Icons.web),
+              selected: index == 4,
               title: Text("Saran Website"),
               onTap: () => {
                 setState(() {
-                  index = 3;
+                  index = 4;
                 }),
                 Navigator.pop(context)
               },
