@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tpm_teori_t3/auth/auth_service.dart';
+import 'package:tpm_teori_t3/auth/login_screen.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -11,6 +13,59 @@ class AboutPage extends StatelessWidget {
         title: const Text('Bantuan Aplikasi'),
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Logout'),
+                  content: const Text('Are you sure you want to logout?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        try {
+                          await AuthService().signOut();
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()),
+                                (route) => false);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text(
+                                    'Logged out successfully',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                            );
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content:
+                                      Text('Logout failed: ${e.toString()}')),
+                            );
+                          }
+                        }
+                      },
+                      child: const Text('Logout'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, bottomPadding),
