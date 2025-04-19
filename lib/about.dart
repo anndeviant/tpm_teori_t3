@@ -5,6 +5,7 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom + 60;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bantuan Aplikasi'),
@@ -12,7 +13,7 @@ class AboutPage extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, bottomPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -31,23 +32,24 @@ class AboutPage extends StatelessWidget {
               'Login',
               'Cara Menggunakan Fitur Login:',
               [
-                'Masukkan username dan password yang valid',
+                'Masukkan alamat email dan password yang valid',
                 'Klik tombol "Login" untuk masuk ke aplikasi',
-                'Jika lupa password, gunakan fitur "Lupa Password"',
+                'Jika belum memiliki akun, gunakan fitur "Register"',
                 'Aplikasi akan menyimpan sesi login Anda'
               ],
               Icons.login,
             ),
             _buildFeatureSection(
-              'Aplikasi Stopwatch',
-              'Cara Menggunakan Stopwatch:',
+              'Konversi Waktu',
+              'Cara Menggunakan Fitur Konversi Waktu:',
               [
-                'Tekan tombol "Start" untuk memulai stopwatch',
-                'Tekan tombol "Stop" untuk menghentikan stopwatch',
-                'Tekan tombol "Reset" untuk mengatur ulang stopwatch ke 00:00:00',
-                'Gunakan tombol "Lap" untuk mencatat waktu putaran'
+                'Masukkan nilai tahun yang ingin dikonversi pada kolom input',
+                'Pilih satuan konversi (Jam, Menit, atau Detik) dari dropdown',
+                'Hasil konversi akan otomatis ditampilkan',
+                'Gunakan tombol "X" untuk mengosongkan input',
+                'Hasil akan mempertimbangkan tahun kabisat secara otomatis'
               ],
-              Icons.timer,
+              Icons.access_time,
             ),
             _buildFeatureSection(
               'Cek Jenis Bilangan',
@@ -63,55 +65,61 @@ class AboutPage extends StatelessWidget {
               Icons.calculate,
             ),
             _buildFeatureSection(
+              'Aplikasi Stopwatch',
+              'Cara Menggunakan Stopwatch:',
+              [
+                'Tekan tombol dengan ikon "play" untuk memulai stopwatch',
+                'Tekan tombol dengan ikon "pause" untuk menghentikan stopwatch',
+                'Tekan tombol dengan ikon "refresh" untuk mengatur ulang stopwatch ke 00:00:00',
+                'Gunakan tombol dengan ikon "flag" saat stopwatch berjalan untuk mencatat waktu putaran (lap)',
+                'Waktu putaran akan ditampilkan di bagian bawah layar',
+                'Waktu akan tetap berjalan meskipun aplikasi berada di background'
+              ],
+              Icons.timer,
+            ),
+            _buildFeatureSection(
               'Tracking LBS',
               'Cara Menggunakan Fitur Tracking LBS:',
               [
-                'Izinkan aplikasi mengakses lokasi Anda',
-                'Klik tombol "Mulai Tracking" untuk mulai melacak posisi',
-                'Lihat lokasi Anda pada peta yang ditampilkan',
-                'Gunakan tombol "Refresh" untuk memperbarui lokasi',
-                'Klik tombol "Berhenti Tracking" untuk menghentikan pelacakan'
+                'Izinkan aplikasi mengakses lokasi Anda saat diminta',
+                'Tunggu aplikasi mendapatkan lokasi Anda saat ini',
+                'Lihat posisi Anda yang ditandai pada peta yang ditampilkan',
+                'Gunakan fitur zoom dan pan untuk menjelajahi peta',
+                'Lokasi Anda akan diperbarui secara otomatis'
               ],
               Icons.location_on,
             ),
             _buildFeatureSection(
-              'Konversi Waktu',
-              'Cara Menggunakan Fitur Konversi Waktu:',
+              'Saran Website',
+              'Cara Menggunakan Fitur Saran Website:',
               [
-                'Masukkan nilai tahun yang ingin dikonversi',
-                'Klik "Konversi" untuk melihat hasil konversi',
-                'Hasil akan menampilkan konversi ke jam, menit, dan detik',
-                'Gunakan tombol "Reset" untuk mengosongkan input'
-              ],
-              Icons.access_time,
-            ),
-            _buildFeatureSection(
-              'Daftar Situs Rekomendasi',
-              'Cara Menggunakan Fitur Daftar Situs:',
-              [
-                'Scroll halaman untuk melihat daftar situs rekomendasi',
-                'Tiap situs memiliki gambar, deskripsi, dan link',
-                'Klik pada gambar atau tombol "Kunjungi" untuk membuka situs',
-                'Tambahkan situs ke favorit dengan menekan ikon bintang'
+                'Pilih kategori website dari dropdown menu',
+                'Scroll halaman untuk melihat daftar situs yang direkomendasikan',
+                'Tiap situs memiliki ikon, deskripsi, dan URL',
+                'Klik tombol browser untuk membuka situs di browser eksternal',
+                'Tambahkan situs ke favorit dengan menekan ikon hati',
+                'Untuk melihat favorit, pilih kategori "Favorites" pada dropdown'
               ],
               Icons.web,
             ),
             _buildFeatureSection(
-              'Favorit',
-              'Cara Menggunakan Fitur Favorit:',
+              'Fitur Bantuan Aplikasi',
+              'Cara Menggunakan Fitur Bantuan:',
               [
-                'Lihat daftar situs yang telah Anda tandai sebagai favorit',
-                'Hapus situs dari favorit dengan menekan ikon bintang lagi',
-                'Gunakan fitur pencarian untuk menemukan favorit tertentu'
+                'Akses halaman ini melalui menu navigasi bawah dengan ikon buku',
+                'Scroll halaman untuk melihat panduan penggunaan semua fitur',
+                'Setiap bagian menjelaskan cara menggunakan fitur tertentu',
+                'Ikuti langkah-langkah yang dijelaskan untuk menggunakan fitur dengan optimal'
               ],
-              Icons.favorite,
+              Icons.help,
             ),
             _buildFeatureSection(
               'Daftar Anggota',
               'Cara Mengakses Daftar Anggota:',
               [
-                'Klik ikon "Anggota" pada menu navigasi bawah',
+                'Klik ikon "Anggota" pada menu navigasi bawah (ikon person)',
                 'Lihat informasi tentang anggota tim pengembang aplikasi',
+                'Setiap anggota ditampilkan dengan foto profil, nama, dan NIM',
                 'Scroll untuk melihat semua anggota tim'
               ],
               Icons.people,
@@ -120,9 +128,10 @@ class AboutPage extends StatelessWidget {
               'Logout',
               'Cara Logout dari Aplikasi:',
               [
-                'Klik ikon logout pada menu aplikasi',
+                'Klik ikon logout di pojok kanan atas aplikasi',
                 'Konfirmasi logout pada dialog yang muncul',
-                'Sesi login Anda akan berakhir dan kembali ke halaman login'
+                'Pilih "Cancel" untuk membatalkan atau "Logout" untuk melanjutkan',
+                'Sesi login Anda akan berakhir dan Anda akan diarahkan ke halaman login'
               ],
               Icons.logout,
             ),
