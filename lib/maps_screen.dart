@@ -366,7 +366,7 @@ class _MapScreenState extends State<MapScreen> {
     }
 
     return Positioned(
-      bottom: 60, 
+      bottom: 60,
       left: 0,
       right: 0,
       child: Container(
@@ -455,7 +455,7 @@ class _MapScreenState extends State<MapScreen> {
             if (_areStepsVisible)
               Container(
                 constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.3, 
+                  maxHeight: MediaQuery.of(context).size.height * 0.3,
                 ),
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
@@ -477,16 +477,22 @@ class _MapScreenState extends State<MapScreen> {
                           IconData directionIcon = Icons.straight; // Default
                           String modifier = step['maneuver_modifier'] ?? '';
                           String type = step['maneuver_type'] ?? '';
+                          String langkah = 'Lurus';
 
                           if (type == 'turn') {
-                            if (modifier.contains('left'))
+                            if (modifier.contains('left')) {
                               directionIcon = Icons.turn_left;
-                            else if (modifier.contains('right'))
+                              langkah = 'Belok Kiri';
+                            } else if (modifier.contains('right')) {
                               directionIcon = Icons.turn_right;
+                              langkah = 'Belok Kanan';
+                            }
                           } else if (type == 'fork') {
                             directionIcon = Icons.call_split;
+                            langkah = 'Fork';
                           } else if (type == 'roundabout') {
                             directionIcon = Icons.roundabout_left;
+                            langkah = 'Roundabout';
                           }
 
                           return Padding(
@@ -503,7 +509,7 @@ class _MapScreenState extends State<MapScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        step['instruction'] ?? 'Lanjut',
+                                        langkah,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w500),
                                       ),
